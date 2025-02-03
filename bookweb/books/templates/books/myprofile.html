@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<head>
+    {% load static %}
+    <title>ClassicReads</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'books/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'books/myprfl.css' %}">
+</head>
+{% include "books/nav.html" %}
+
+<body>
+  <div class="container">
+    <input type="checkbox" id="check">
+    
+    <!-- Login Form -->
+    <div class="login form">
+      <header>Login</header>
+      <form method="POST" action="{% url 'myprofile' %}">
+        {% csrf_token %}
+        {{ login_form.username }}
+        {{ login_form.password }}
+        <a href="#">Forgot password?</a>
+        <input type="submit" name="login" class="button" value="Login">
+      </form>
+      <div class="signup">
+        <span class="signup">Don't have an account?
+          <label for="check">Signup</label>
+        </span>
+      </div>
+    </div>
+    
+    {{form.errors}}
+
+    <!-- Signup Form -->
+    <div class="registration form">
+      <header>Sign up</header>
+      <form method="POST" action="{% url 'myprofile' %}">
+        {% csrf_token %}
+        {{ signup_form.email }}
+        {{ signup_form.username }}
+        {{ signup_form.password1 }}
+        {{ signup_form.password2 }}
+        <input type="submit" name="signup" class="button" value="Sign up">
+      </form>
+      <div class="signup">
+        <span class="signup">Already have an account?
+          <label for="check">Login</label>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+    var form_fields = document.getElementsByTagName('input')
+    form_fields[3].placeholder='Username...'
+    form_fields[4].placeholder='Password...'
+    form_fields[7].placeholder='Email...'
+    form_fields[8].placeholder='Username...'
+    form_fields[9].placeholder='Enter a password...'
+    form_fields[10].placeholder='Re-enter the password...'
+</script>
+</html>
