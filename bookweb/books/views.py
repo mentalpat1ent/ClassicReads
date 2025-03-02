@@ -50,14 +50,16 @@ def myprofile(request):
         if 'signup' in request.POST:
             signup_form = CreateUserForm(request.POST)
             if signup_form.is_valid():
-                user = signup_form.save()  
+                user = signup_form.save()
+                login(request, user)  # Automatically log in the user
+                return redirect('dashboard')  # Redirect after signup
 
         elif 'login' in request.POST:
             login_form = AuthenticationForm(request, data=request.POST)
             if login_form.is_valid():
                 user = login_form.get_user()
                 login(request, user)
-                return redirect('success_page')
+                return redirect('dashboard')  # Redirect after login
 
     context = {'signup_form': signup_form, 'login_form': login_form}
     return render(request, 'books/myprofile.html', context)
@@ -67,3 +69,7 @@ def aboutus(request):
     return render(request, 'books/aboutus.html')
 def success_page(request):
     return render(request, 'books/success.html')
+
+def dashboard(request):
+
+    return render(request, 'books/dashboard.html')
