@@ -1,62 +1,64 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
     {% load static %}
     <title>ClassicReads</title>
     <link rel="icon" type="image/x-icon" href="{% static 'books/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'books/myprfl.css' %}">
 </head>
+
 {% include "books/nav.html" %}
 
 <body>
   <div class="container">
     <input type="checkbox" id="check">
-    
-    <!-- Login Form -->
+
     <div class="login form">
       <header>Login</header>
       <form method="POST" action="{% url 'myprofile' %}">
         {% csrf_token %}
-        {{ login_form.username }}
-        {{ login_form.password }}
+        
+        <div>
+          {{ login_form.username }}
+          {% for error in login_form.username.errors %}
+              <p style="color: red;">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        <div>
+          {{ login_form.password }}
+          {% for error in login_form.password.errors %}
+              <p style="color: red;">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        {% for error in login_form.non_field_errors %}
+          <p style="color: red;">{{ error }}</p>
+        {% endfor %}
+
         <a href="#">Forgot password?</a>
         <input type="submit" name="login" class="button" value="Login">
       </form>
       <div class="signup">
         <span class="signup">Don't have an account?
-          <label for="check">Signup</label>
+          <a href="{% url 'signuppage' %}">Signup</a>
         </span>
       </div>
     </div>
-    
-    {{form.errors}}
 
-    <!-- Signup Form -->
-    <div class="registration form">
-      <header>Sign up</header>
-      <form method="POST" action="{% url 'myprofile' %}">
-        {% csrf_token %}
-        {{ signup_form.email }}
-        {{ signup_form.username }}
-        {{ signup_form.password1 }}
-        {{ signup_form.password2 }}
-        <input type="submit" name="signup" class="button" value="Sign up">
-      </form>
-      <div class="signup">
-        <span class="signup">Already have an account?
-          <label for="check">Login</label>
-        </span>
-      </div>
-    </div>
-  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      let fields = {
+        usernameLogin: document.querySelector(".login input[name='username']"),
+        passwordLogin: document.querySelector(".login input[name='password']")
+      };
+
+      if (fields.usernameLogin) fields.usernameLogin.placeholder = "Enter your username";
+      if (fields.passwordLogin) fields.passwordLogin.placeholder = "Enter your password";
+    });
+  </script>
+
 </body>
 
-<script>
-    var form_fields = document.getElementsByTagName('input')
-    form_fields[3].placeholder='Username...'
-    form_fields[4].placeholder='Password...'
-    form_fields[7].placeholder='Email...'
-    form_fields[8].placeholder='Username...'
-    form_fields[9].placeholder='Enter a password...'
-    form_fields[10].placeholder='Re-enter the password...'
-</script>
 </html>
